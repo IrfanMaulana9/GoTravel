@@ -1,0 +1,15 @@
+# secrets
+.env
+**/.env
+**/.env.*
+
+# docs and archives
+*.md
+**/*.md
+*.zip
+**/*.zip
+
+# dependencies and build artifacts
+**/node_modules/
+**/vendor/
+**/.next/
