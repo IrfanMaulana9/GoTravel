@@ -1,0 +1,532 @@
+{
+	"info": {
+		"_postman_id": "gotravel-api-collection",
+		"name": "GoTravel API",
+		"description": "Koleksi endpoint API untuk proyek GoTravel. Pastikan backend berjalan (biasanya di http://localhost:8000).",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Register User",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Test User\",\n    \"email\": \"user@test.com\",\n    \"password\": \"password\",\n    \"password_confirmation\": \"password\",\n    \"phone\": \"081234567890\",\n    \"address\": \"Jl. Test No. 123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/register",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Register Agent",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "Test Agent",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "agent@test.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "password",
+									"type": "text"
+								},
+								{
+									"key": "password_confirmation",
+									"value": "password",
+									"type": "text"
+								},
+								{
+									"key": "phone",
+									"value": "089876543210",
+									"type": "text"
+								},
+								{
+									"key": "business_name",
+									"value": "Test Travel Jaya",
+									"type": "text"
+								},
+								{
+									"key": "business_license",
+									"value": "SIUP-123456",
+									"type": "text"
+								},
+								{
+									"key": "business_address",
+									"value": "Jl. Bisnis No. 1",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/register-agent",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"register-agent"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"if (jsonData.success) {",
+									"    pm.collectionVariables.set(\"token\", jsonData.access_token);",
+									"    console.log(\"Token updated\");",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"user@test.com\",\n    \"password\": \"password\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Me (Profile)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/auth/me",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Logout",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/auth/logout",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Travels",
+			"item": [
+				{
+					"name": "Get All Travels (Public)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/travels",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"travels"
+							],
+							"query": [
+								{
+									"key": "from",
+									"value": "Jakarta",
+									"disabled": true
+								},
+								{
+									"key": "to",
+									"value": "Bandung",
+									"disabled": true
+								},
+								{
+									"key": "date",
+									"value": "2025-12-30",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Cities",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/travels/cities",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"travels",
+								"cities"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Travel Detail",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/travels/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"travels",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Bookings",
+			"item": [
+				{
+					"name": "Get My Bookings",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/bookings",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"bookings"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Booking",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"travel_id\": 1,\n    \"date\": \"2025-12-30\",\n    \"seats\": 2,\n    \"passengers\": [\n        {\n            \"name\": \"Penumpang 1\",\n            \"phone\": \"08123123123\"\n        },\n        {\n            \"name\": \"Penumpang 2\",\n            \"phone\": \"08987987987\"\n        }\n    ],\n    \"note\": \"Jemput di depan\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/bookings",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"bookings"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Agent Only",
+			"item": [
+				{
+					"name": "Agent Stats",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/agent/stats",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"agent",
+								"stats"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Travel (Route)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"origin_city\": \"Jakarta\",\n    \"destination_city\": \"Surabaya\",\n    \"departure_time\": \"08:00\",\n    \"arrival_time\": \"20:00\",\n    \"price\": 350000,\n    \"available_seats\": 10,\n    \"vehicle_type\": \"Hiace\",\n    \"vehicle_number\": \"B 1234 TEST\",\n    \"facilities\": \"AC, Reclining Seat, USB Charger\",\n    \"description\": \"Perjalanan nyaman via Tol Trans Jawa\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/travels",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"travels"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Admin Only",
+			"item": [
+				{
+					"name": "Admin Stats",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/admin/stats",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"admin",
+								"stats"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Users",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/admin/users",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"admin",
+								"users"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8000/api",
+			"type": "string"
+		},
+		{
+			"key": "token",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
